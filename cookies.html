@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookie &amp; Storage Policy · HeatShield Mumbai</title>
+<link rel="stylesheet" href="css/app.css"><link rel="stylesheet" href="css/consent.css"><link rel="stylesheet" href="css/legal.css">
+</head>
+<body class="legal">
+<header class="lhead">
+  <a class="brand" href="./">HeatShield <span>Mumbai</span></a>
+  <div class="r"><a href="./" data-i18n="legal.back">← Back to the map</a><select id="langSel" aria-label="Language"></select></div>
+</header>
+<main class="doc">
+  <h1>Cookie &amp; Storage Policy</h1>
+  <p class="meta">Policy version 1.2 · Last updated 23 October 2026</p>
+  <section class="summary" aria-labelledby="sumh"><h2 id="sumh" data-i18n="legal.summaryTitle">Summary</h2><p class="note off" data-ref-note data-i18n="legal.reference"></p><div data-i18n-html="legal.sum.cookies"></div></section>
+
+  <article lang="en">
+  <h2>1. This site sets no cookies</h2>
+  <p>HeatShield Mumbai doesn't create cookies, and has no analytics, advertising, social-media plug-ins or other tracking technologies. Requests the app makes to Open-Meteo, the Overpass API and OpenStreetMap Nominatim are sent without cookies, so those services can't set or read cookies through this app.</p>
+
+  <h2>2. Cookies, local storage, session storage and IndexedDB</h2>
+  <ul>
+    <li><b>Cookies</b> are small files a website sets that the browser sends back to the server with every request. They are often used for logins and tracking. This app uses none.</li>
+    <li><b>Local storage</b> keeps data in your browser for this site only. It is never sent to a server automatically and stays until deleted. This app uses it, with your permission, as described below.</li>
+    <li><b>Session storage</b> is like local storage but is cleared when the tab closes. This app doesn't use it.</li>
+    <li><b>IndexedDB</b> is a larger in-browser database. This app doesn't use it.</li>
+    <li>Your browser's normal <b>HTTP cache</b> also keeps copies of the app's own files. For example, the map data file is kept for up to one day so it doesn't download every time. Your browser manages this. It contains no personal data and can be cleared in your browser settings.</li>
+  </ul>
+
+  <h2>3. What the app stores, and when</h2>
+  <p>All entries are first-party: they are created by this site, for this site, in your browser only.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Name (local storage key)</th><th>Category</th><th>What it contains</th><th>Purpose</th><th>Kept for</th></tr></thead>
+    <tbody>
+      <tr><td><code>mnav-consent</code></td><td>Essential</td><td>Policy version, date of your choice, and whether you allowed Settings and the Offline data cache</td><td>Remember your choice so the notice doesn't reappear on every visit</td><td>12 months, or until the policy version changes</td></tr>
+      <tr><td><code>mnav-lang</code></td><td>Settings (optional)</td><td>Language code, e.g. <code>mr</code></td><td>Keep your language</td><td>Until changed, withdrawn or cleared</td></tr>
+      <tr><td><code>mnav-units</code></td><td>Settings (optional)</td><td>°C/°F and km/mi choice</td><td>Keep your units</td><td>Until changed, withdrawn or cleared</td></tr>
+      <tr><td><code>mnav-theme</code></td><td>Settings (optional)</td><td>Light or dark</td><td>Keep your theme</td><td>Until changed, withdrawn or cleared</td></tr>
+      <tr><td><code>mnav:c1:wx:…</code>, <code>mnav:c1:aq:…</code></td><td>Offline data cache (optional)</td><td>Weather or air-quality forecast for a rounded location (the rounded coordinates are part of the name)</td><td>Faster loading, offline use</td><td>7 days</td></tr>
+      <tr><td><code>mnav:c1:heat:…</code></td><td>Offline data cache (optional)</td><td>Heat forecast grid for Mumbai (the same for everyone)</td><td>Faster loading, offline use</td><td>7 days</td></tr>
+      <tr><td><code>mnav:c1:ov:…</code></td><td>Offline data cache (optional)</td><td>Parking, EV charging and toilet locations from OpenStreetMap for one map tile (the tile number is part of the name)</td><td>Faster loading, offline use, fewer requests to Overpass</td><td>7 days (refreshed after 24 hours)</td></tr>
+      <tr><td><code>mnav:c1:geo:…</code></td><td>Offline data cache (optional)</td><td>Results of an online place search, including the text you searched</td><td>Avoid repeating the same search</td><td>7 days</td></tr>
+    </tbody>
+  </table></div>
+  <p>Mumbai Copilot keeps its chat only in the page's memory and stores nothing. Building footprints for the 3D view are also kept in memory only. Nothing optional is written until you choose. If you reject the optional categories, the app still works fully: your settings and fetched data last only while the page is open. An older version of this app could store <code>hs3d-theme</code>. The current app deletes it unless you allow Settings.</p>
+
+  <h2>4. Your choices</h2>
+  <p>On your first visit a notice offers <b>Accept all</b>, <b>Reject optional</b> and <b>Customise</b>. The optional switches start off. To change or withdraw your choice at any time, use <b>Storage settings</b> in the footer of every page or in the app's Settings panel. Switching a category off deletes its data immediately. "Delete everything this app stored on this device" removes every entry above, including your choice.</p>
+  <p>You can also clear site data in your browser settings or use a private window. Doing either removes everything listed here.</p>
+
+  <h2>5. Changes</h2>
+  <p>If the app starts storing something new, this page and its version number will change, and the app will ask for your choice again before storing it.</p>
+  <p>For privacy questions, see the <a href="privacy">Privacy Policy</a>.</p>
+  </article>
+</main>
+<footer class="lfoot"><a href="terms" data-i18n="foot.terms">Terms</a> · <a href="privacy" data-i18n="foot.privacy">Privacy</a> · <a href="cookies" data-i18n="foot.cookies">Cookies &amp; storage</a> · <button class="link" data-consent-open data-i18n="foot.storage">Storage settings</button></footer>
+<script type="module" src="js/legal.js"></script>
+</body>
+</html>

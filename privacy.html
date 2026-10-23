@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy · HeatShield Mumbai</title>
+<link rel="stylesheet" href="css/app.css"><link rel="stylesheet" href="css/consent.css"><link rel="stylesheet" href="css/legal.css">
+</head>
+<body class="legal">
+<header class="lhead">
+  <a class="brand" href="./">HeatShield <span>Mumbai</span></a>
+  <div class="r"><a href="./" data-i18n="legal.back">← Back to the map</a><select id="langSel" aria-label="Language"></select></div>
+</header>
+<main class="doc">
+  <h1>Privacy Policy</h1>
+  <p class="meta">Policy version 1.2 · Last updated 23 October 2026 (1.1 added the facilities layer and Mumbai Copilot; 1.2 adds building footprints for the optional 3D view) · Effective from <span class="todo">[OWNER: launch date]</span></p>
+  <p class="draft" data-i18n="legal.draft">Draft for legal review.</p>
+  <section class="summary" aria-labelledby="sumh"><h2 id="sumh" data-i18n="legal.summaryTitle">Summary</h2><p class="note off" data-ref-note data-i18n="legal.reference"></p><div data-i18n-html="legal.sum.privacy"></div></section>
+
+  <article lang="en">
+  <h2>1. Who we are</h2>
+  <p>HeatShield Mumbai ("the app") is operated by <span class="todo">[OWNER: legal name of the person or organisation]</span>, <span class="todo">[OWNER: postal address]</span>. Contact: <span class="todo">[OWNER: email address]</span>. Grievance Officer: <span class="todo">[OWNER: name, email]</span>.</p>
+  <p>This policy explains what personal data the app handles, where it goes and what control you have. It describes the app as built, not an aspiration. If the app changes how it handles data, this policy and its version number change too.</p>
+
+  <h2>2. The short version</h2>
+  <ul>
+    <li>No accounts, no sign-in, no cookies, no analytics, no advertising and no tracking.</li>
+    <li>Our server only delivers the app's files. It doesn't receive your location, searches or routes. Route calculation, place search and map drawing run inside your browser.</li>
+    <li>Outside services are contacted directly from your browser: Open-Meteo, for weather, air quality and heat; the Overpass API, only when you turn on parking, EV charging or toilets, ask the Copilot for them, or open the 3D view; and OpenStreetMap Nominatim, only when you choose an online search.</li>
+    <li>Settings and cached results are kept in your browser only if you allow it, and you can delete them at any time.</li>
+  </ul>
+
+  <h2>3. What the app handles, why, and where it goes</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Information</th><th>Why</th><th>Where it goes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Your precise location (GPS)</b>, only after you press "Use my location", "My location", "Follow" or "Start navigation" and your browser asks your permission</td><td>Set a start point, show where you are, follow a route, detect when you leave it</td><td>Kept in the page's memory only. Never stored by the app and never sent to us or to the weather or search services. Your browser or operating system may use its own location service to work out the position, under its own terms. You can always type or click a start point instead.</td></tr>
+      <tr><td><b>Approximate coordinates</b> of a place you select, your destination, or the centre of the map you are looking at, rounded to about 2 km (weather) or about 11 km (air quality)</td><td>Show weather and air quality for that area</td><td>Sent to Open-Meteo (<code>api.open-meteo.com</code>, <code>air-quality-api.open-meteo.com</code>). This can be near where you are if you look at your own area.</td></tr>
+      <tr><td>Fixed grid of coordinates covering Mumbai</td><td>Heat forecast map</td><td>Sent to Open-Meteo. The grid is the same for everyone and says nothing about you.</td></tr>
+      <tr><td><b>Text you search online</b>, only when you choose "Search online" or press Enter with no offline match, plus your language choice</td><td>Find places missing from the built-in list</td><td>Sent to OpenStreetMap Nominatim (<code>nominatim.openstreetmap.org</code>), run by the OpenStreetMap Foundation. Typing in the search box alone sends nothing.</td></tr>
+      <tr><td><b>Map areas</b> (a rectangle about 5.5 km across) where you show parking, EV charging or toilets, or ask the Copilot to find them</td><td>Load those facilities from OpenStreetMap</td><td>Sent to the Overpass API (<code>overpass-api.de</code>), a public OpenStreetMap service. The area can be near you if you look at your own area. Nothing is sent while these layers are off.</td></tr>
+      <tr><td><b>Map areas</b> (squares about 1.1 km across) around what you look at in the optional <b>3D view</b>, or along a route you follow there</td><td>Load building footprints from OpenStreetMap</td><td>Sent to the Overpass API. The results are kept in the page's memory only, never in your browser's storage. Nothing is sent unless you open 3D.</td></tr>
+      <tr><td><b>Messages you type to Mumbai Copilot</b></td><td>Answer your question</td><td>Interpreted inside your browser by fixed rules: there is no AI model and the message is not sent anywhere. Only the specific request it triggers is sent, as described in the other rows (for example, rounded coordinates for weather). A place name is sent to Nominatim only if you press "Search online". Chat history is kept in the page's memory and disappears when you close or reload the page.</td></tr>
+      <tr><td>Places you search offline, routes, directions, the selected place</td><td>Navigation</td><td>Processed in your browser only. Never sent anywhere. Gone when you close or reload the page.</td></tr>
+      <tr><td>Settings (language, units, theme)</td><td>Remember your preferences</td><td>Your browser's local storage, only with your "Settings" permission. See the <a href="cookies">Cookie &amp; Storage Policy</a>.</td></tr>
+      <tr><td>Cached weather, heat, air-quality and online-search results, including the rounded coordinates and search text above</td><td>Faster loading and offline use</td><td>Your browser's local storage, only with your "Offline data cache" permission. Each entry is deleted after 7 days.</td></tr>
+      <tr><td>Direction text, if you turn on voice guidance</td><td>Read directions aloud</td><td>Your browser's speech feature. Some browsers use online voices (for example, voices labelled "Google" in Chrome), which means the instruction text is processed by the browser maker. Use a local voice or keep voice guidance off if you prefer.</td></tr>
+      <tr><td>Technical request data: IP address, browser type, time, and the address of this site as the referring origin</td><td>Needed for any internet request</td><td>Seen by Open-Meteo and Nominatim for the requests above, and by whoever hosts this site <span class="todo">[OWNER: name the hosting provider and describe its access logs and retention, or state "this site is only run locally"]</span>. The app itself keeps no server logs.</td></tr>
+    </tbody>
+  </table></div>
+  <p>We don't sell, rent or share personal data for advertising. We don't build profiles. We don't use the data for automated decisions about you.</p>
+
+  <h2>4. Third-party services</h2>
+  <p>These services receive the data described above directly from your browser and handle it under their own terms and privacy policies:</p>
+  <ul>
+    <li>Open-Meteo: <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">terms and privacy information</a>.</li>
+    <li>OpenStreetMap Foundation (Nominatim): <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">privacy policy</a> and <a href="https://operations.osmfoundation.org/policies/nominatim/" target="_blank" rel="noopener">usage policy</a>.</li>
+    <li>Overpass API (<code>overpass-api.de</code>), run by its operators as a public service for OpenStreetMap data: <a href="https://dev.overpass-api.de/overpass-doc/en/preface/commons.html" target="_blank" rel="noopener">usage rules</a>. <span class="todo">[OWNER: link the operator's privacy information]</span></li>
+  </ul>
+  <p>Requests to these services are made without cookies or other browser credentials. These providers may process data outside India. <span class="todo">[LEGAL REVIEW: confirm the roles of these providers under the DPDP Act and any cross-border transfer restrictions notified under section 16.]</span></p>
+
+  <h2>5. Legal basis and consent</h2>
+  <p>Sending coordinates to get weather, and search text to find a place, happens only because you asked the app to do that. Storing settings and cached results on your device happens only with the consent you give in the storage notice. You can withdraw that consent as easily as you gave it: open <b>Storage settings</b>, from the footer or the app's Settings panel, and switch the option off. Withdrawing deletes the stored data immediately. It doesn't affect anything done before you withdrew.</p>
+
+  <h2>6. How long data is kept</h2>
+  <ul>
+    <li>Location, routes and searches in the page's memory: until you close or reload the page.</li>
+    <li>Cached results (including facility map areas): deleted the next time the app opens after 7 days, or immediately when you withdraw cache consent. Copilot chat: until you close or reload the page.</li>
+    <li>Settings: until you change them, withdraw consent or clear your browser data.</li>
+    <li>Your storage choice: 12 months. After that, or when this policy's version changes, the app asks again and removes optional data until you decide.</li>
+    <li>Data held by Open-Meteo, Nominatim or the host: according to their policies.</li>
+  </ul>
+
+  <h2>7. Security</h2>
+  <p>All requests to outside services use HTTPS. The site sends security headers, including a Content Security Policy that only allows connections to the services named here. Data in local storage is <b>not encrypted</b>. Anyone with access to your browser profile can read it, so use "Delete everything this app stored on this device" on shared computers. No method of storage or transmission is completely secure.</p>
+
+  <h2>8. Your rights</h2>
+  <p>Under India's Digital Personal Data Protection Act, 2023 (DPDP Act), you can ask for a summary of your personal data being processed, its correction, completion, updating or erasure, and the redress of grievances. You can also nominate another person to exercise your rights if you die or become incapable. Because we don't hold your data on our servers, you can do most of this yourself:</p>
+  <ul>
+    <li><b>See</b> what is stored: Storage settings shows a count. Your browser's developer tools show the entries (keys starting with <code>mnav</code>).</li>
+    <li><b>Erase</b>: "Delete everything this app stored on this device" in Storage settings.</li>
+    <li><b>Withdraw consent</b>: switch the option off in Storage settings.</li>
+  </ul>
+  <p>For anything else, or to complain, contact the Grievance Officer at <span class="todo">[OWNER: email]</span>. We will respond within <span class="todo">[OWNER: period, no longer than the maximum set by the DPDP Rules, 2025; LEGAL REVIEW]</span>. If you are not satisfied, you may complain to the <b>Data Protection Board of India</b> once you have used this grievance process.</p>
+  <p>Requests about data held by Open-Meteo, the OpenStreetMap Foundation or your browser maker should go to them.</p>
+
+  <h2>9. Children</h2>
+  <p>The app has no accounts and doesn't knowingly collect personal data from children on any server. Children should use navigation with a parent or guardian. <span class="todo">[LEGAL REVIEW: assess whether the verifiable parental-consent requirements of section 9 of the DPDP Act and the DPDP Rules apply to the third-party requests described above.]</span></p>
+
+  <h2>10. The law and when it applies</h2>
+  <p>This policy is written with the DPDP Act, 2023 and the Digital Personal Data Protection Rules, 2025 in mind. The Rules were notified on 13 November 2025 and come into force in phases. Most obligations on data fiduciaries, including notice, consent, security and data-principal rights, apply from about 13 May 2027. We follow them already. Other laws, such as the Information Technology Act, 2000, may also apply. This policy was generated as part of building the app and is <b>not a guarantee of legal compliance</b>. It must be reviewed by a qualified lawyer before public launch.</p>
+
+  <h2>11. Changes</h2>
+  <p>If we change this policy, we will update the version number and date above. If the change affects what is stored on your device, the app will ask for your choice again.</p>
+  </article>
+</main>
+<footer class="lfoot"><a href="terms" data-i18n="foot.terms">Terms</a> · <a href="privacy" data-i18n="foot.privacy">Privacy</a> · <a href="cookies" data-i18n="foot.cookies">Cookies &amp; storage</a> · <button class="link" data-consent-open data-i18n="foot.storage">Storage settings</button></footer>
+<script type="module" src="js/legal.js"></script>
+</body>
+</html>

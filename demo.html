@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3D demo neighbourhood · HeatShield Mumbai</title>
+<meta name="description" content="Teaching model: a made-up 3D neighbourhood showing how shade, surfaces and green space change heat, flooding and air pollution.">
+<link rel="stylesheet" href="css/consent.css">
+<style>
+:root{box-sizing:border-box;--bg:#faf7f2;--card:#fff;--ink:#1b2430;--mute:#5b6672;--line:#e3dcd2;--accent:#e4572e;--sky1:#dfe9f3;--sky2:#f3ece2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161d;--card:#1a232e;--ink:#eef1f4;--mute:#9aa5b1;--line:#2b3846;--sky1:#0b1016;--sky2:#1c2836}}
+:root[data-theme="dark"]{--bg:#10161d;--card:#1a232e;--ink:#eef1f4;--mute:#9aa5b1;--line:#2b3846;--sky1:#0b1016;--sky2:#1c2836}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#faf7f2;--card:#fff;--ink:#1b2430;--mute:#5b6672;--line:#e3dcd2;--accent:#e4572e;--sky1:#dfe9f3;--sky2:#f3ece2}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161d;--card:#1a232e;--ink:#eef1f4;--mute:#9aa5b1;--line:#2b3846;--sky1:#0b1016;--sky2:#1c2836}}
+:root[data-theme="dark"]{--bg:#10161d;--card:#1a232e;--ink:#eef1f4;--mute:#9aa5b1;--line:#2b3846;--sky1:#0b1016;--sky2:#1c2836}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Calibri,"Segoe UI",system-ui,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px 2px}
+h1{margin:0;font-size:24px}h1 span{color:var(--accent)}
+.sub{color:var(--mute);margin:0;font-size:13px;padding:0 18px}
+main{display:flex;flex-wrap:wrap;gap:12px;padding:10px 18px 24px}
+#view{flex:3 1 640px;min-width:0}
+#side{flex:1 1 320px;max-width:420px;min-width:0;display:flex;flex-direction:column;gap:10px}
+#stage{position:relative;height:clamp(500px,74vh,860px);border:1px solid var(--line);border-radius:10px;background:linear-gradient(var(--sky1),var(--sky2));overflow:hidden;touch-action:none}
+#stage canvas{display:block;width:100%;height:100%}
+.ctl{position:absolute;top:10px;right:10px;display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:70%}
+.ctl button,.b{padding:5px 9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.b[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+#comp{position:absolute;left:12px;top:12px;width:38px;height:38px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:flex-start;justify-content:center;font-size:12px;font-weight:700;color:var(--accent)}
+.hint{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+.card h2{margin:0 0 6px;font-size:15px}
+label{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-top:7px}
+label b{color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+select{width:100%;padding:5px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px}
+.leg{display:flex;flex-wrap:wrap;gap:5px 12px;font-size:12px;color:var(--mute)}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px}
+.stats{display:flex;gap:8px;margin-top:8px}
+.stats div{flex:1;border:1px solid var(--line);border-radius:8px;padding:5px 8px;font-size:12px;color:var(--mute)}
+.stats b{display:block;font-size:19px;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.seas{display:flex;gap:5px}.seas .b{flex:1}
+.row{display:flex;gap:6px;align-items:center;margin-top:7px;font-size:13px}.row .b{flex:1}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:3px 2px;text-align:left}th{color:var(--mute)}
+td input[type=number]{width:62px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:2px 4px}
+small,.note{color:var(--mute);font-size:12px}
+#info,#rinfo{font-size:13.5px;line-height:1.5}
+
+.off{display:none!important}
+.modes{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.modes .b{padding:6px 12px;text-decoration:none;display:inline-block}
+.teach a{color:inherit;font-weight:700}
+.teach{margin:6px 18px 0;padding:8px 12px;border-radius:8px;background:#fff4e5;color:#8a4b00;font-size:13px}
+:root[data-theme="dark"] .teach{background:#3a2a12;color:#ffcf8a}
+.foot{padding:4px 18px 18px;color:var(--mute);font-size:12px}.foot a,.foot .link{color:var(--accent)}
+.link{background:none;border:0;padding:0;font:inherit;cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+<header><h1>HeatShield <span>3D</span></h1><button class="b" id="thm">Dark</button></header>
+<p class="sub">Teaching model of a made-up neighbourhood. Click a place, plan a cooler route, or edit the map.</p>
+<p class="teach"><b>This is not Mumbai and not real data.</b> The neighbourhood is fictional and every number comes from the sliders and a simple teaching model, to show how shade, surfaces and green space change heat, flooding and air pollution. For real Mumbai routes, live weather and the heat forecast map, use <a href="./">Mumbai navigation</a>.</p>
+<main>
+<section id="view">
+<nav class="modes" aria-label="Mode"><a class="b" href="demo" aria-current="page" aria-pressed="true">3D demo neighbourhood</a><a class="b" href="./">Mumbai navigation</a></nav>
+<div id="stage">
+<div id="comp"><span id="cn">N</span></div>
+<div class="ctl"><button data-v="iso">Iso</button><button data-v="top">Top</button><button data-v="close">Close</button><button data-v="street">Street</button><button id="rl">&#9664;</button><button id="rr">&#9654;</button><button id="zi">+</button><button id="zo">&minus;</button></div>
+<div class="hint">Drag: orbit &middot; Right-drag or Shift-drag: pan &middot; Wheel: zoom &middot; WASD / arrows: move &middot; Q, E: rotate</div>
+</div>
+<div class="card" style="margin-top:10px"><div class="leg" id="leg"></div>
+<div class="stats" id="stats3d"><div>High-risk cells<b id="nHigh">0</b></div><div>Lower-risk cells<b id="nLow">0</b></div><div><span id="nAirL">City air temp</span><b id="nAir">0</b></div></div>
+</div>
+</section>
+<aside id="side">
+<div class="card"><h2>Season <small>(what-if inputs, not live weather)</small></h2><div class="seas"><button class="b" id="sb0" aria-pressed="true">Summer heat</button><button class="b" id="sb1" aria-pressed="false">Monsoon flood</button><button class="b" id="sb2" aria-pressed="false">Winter air</button></div>
+<div id="g0"><label>City air temperature <b id="vT"></b></label><input id="T" type="range" min="28" max="44" step="0.5" value="34">
+<label>Humidity <b id="vH"></b></label><input id="H" type="range" min="20" max="90" step="1" value="45">
+<label>Time of day <b id="vC"></b></label><input id="C" type="range" min="6" max="18" step="0.25" value="13"></div>
+<div id="g1" style="display:none"><label>Rainfall intensity <b id="vR"></b></label><input id="R" type="range" min="0" max="100" step="5" value="40"></div>
+<div id="g2" style="display:none"><label>City PM2.5 background <b id="vP"></b></label><input id="P" type="range" min="20" max="250" step="5" value="70"><label>Time of day <b id="vW"></b></label><input id="W" type="range" min="6" max="18" step="0.25" value="9"></div></div>
+<div class="card demo-only"><h2>Selected place</h2><div id="info">Click a street, park or building in the map.</div>
+<div class="row"><button class="b" id="setS">Set as start</button><button class="b" id="setE">Set as end</button></div></div>
+<div class="card demo-only"><h2>Navigate</h2>
+<div id="rinfo">Select a place, then set it as start or end.</div>
+<div class="row"><button class="b" id="clr">Clear route</button></div>
+<label>Jump to</label><div class="row" style="margin-top:3px"><select id="goT"><option value="C">Cooling centre / relief point</option><option value="G">Playground</option><option value="P">Park</option><option value="V">Hawker stall</option><option value="S">Shop</option><option value="H">House</option><option value="A">Apartment block</option></select><button class="b" id="go" style="flex:0 0 56px">Go</button></div></div>
+<div class="card demo-only"><h2>Edit the map</h2>
+<div class="grid" id="tools"></div>
+<label>Apartment floors <b id="vF"></b></label><input id="F" type="range" min="3" max="9" step="1" value="6">
+<label>Building height scale <b id="vS"></b></label><input id="HSc" type="range" min="0.5" max="2" step="0.1" value="1">
+<div class="row"><input type="checkbox" id="cw" checked><label style="margin:0;display:inline">Show windows</label><input type="checkbox" id="ct" checked style="margin-left:10px"><label style="margin:0;display:inline">Show trees</label></div>
+<div class="row"><button class="b" id="rst">Reset layout</button><button class="b" id="cls">Clear to streets</button></div>
+<small>Pick a tool, then click the map. Taller buildings cast longer shade.</small></div>
+<div class="card demo-only" id="valcard"><h2>Check the model against sensors <small>(example)</small></h2>
+<small>Snapshot at 35 °C, 50% humidity, 14:00. The "measured" values are made-up example numbers, not real sensor readings: type your own measurements to try the bias correction.</small>
+<table id="val"></table>
+<div class="row"><input type="checkbox" id="bias"><label style="margin:0;display:inline">Apply bias correction to the map</label></div>
+<div class="note" id="mae" style="margin-top:6px"></div></div>
+<div class="card"><h2>How the risk is estimated</h2><div class="note" id="mtext"></div></div>
+</aside>
+</main>
+<footer class="foot"><a href="./">Mumbai navigation</a> · <a href="terms">Terms</a> · <a href="privacy">Privacy</a> · <a href="cookies">Cookies &amp; storage</a> · <button class="link" data-consent-open>Storage settings</button> · 3D rendering: three.js (MIT)</footer>
+<script type="module" src="js/demo3d.js"></script>
+</body>
+</html>

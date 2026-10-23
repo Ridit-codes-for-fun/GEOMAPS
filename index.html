@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HeatShield Mumbai</title>
+<meta name="description" content="Walking navigation for Mumbai with live weather, air quality and a heat forecast map.">
+<link rel="stylesheet" href="css/app.css"><link rel="stylesheet" href="css/consent.css">
+</head>
+<body>
+<div class="filenote" data-i18n="filenote">Open this app through its local server: double-click start.bat or run npm start, then go to http://127.0.0.1:5173/</div>
+
+<main class="shell" id="shell" data-panel="open">
+  <!-- Full-screen map -->
+  <section id="rstage" aria-label="Map">
+    <canvas id="rc" tabindex="0" data-i18n-aria="map.aria" aria-label="Map of Mumbai"></canvas>
+    <div id="rscale" aria-hidden="true"></div>
+    <div class="mctl layers" role="group" data-i18n-aria="layers" aria-label="Map layers">
+      <button id="lyHeat" aria-pressed="true" data-i18n="layer.heat">Heat</button><button id="lyRef" aria-pressed="false" data-i18n="layer.places">Public places</button>
+      <button id="ly_parking" aria-pressed="false" data-i18n="am.t.parking">Parking</button><button id="ly_ev" aria-pressed="false" data-i18n="am.t.ev">EV charging</button><button id="ly_toilets" aria-pressed="false" data-i18n="am.t.toilets">Toilets</button>
+    </div>
+    <div class="mctl side">
+      <button id="rz_i" data-i18n-aria="zoom.in" data-i18n-title="zoom.in" aria-label="Zoom in">+</button>
+      <button id="rz_o" data-i18n-aria="zoom.out" data-i18n-title="zoom.out" aria-label="Zoom out">&minus;</button>
+      <button id="rloc" data-i18n="ctl.loc">My location</button>
+      <button id="rfol" aria-pressed="false" data-i18n="ctl.follow">Follow</button>
+      <button id="rfit" data-i18n="ctl.fit">Fit route</button>
+      <button id="ly3d" data-i18n="v3d.btn">3D</button>
+    </div>
+    <div class="maplegend">
+      <button id="legBtn" class="legbtn" aria-expanded="true" aria-controls="legBody"><span data-i18n="legend">Legend</span> <span aria-hidden="true" class="caret">▾</span></button>
+      <div id="legBody"><div class="heat-legend leg" id="mapHeatLegend"></div><div id="refLegend" class="leg off"></div><div id="amLegend" class="leg off"></div></div>
+    </div>
+    <div class="rattr">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></div>
+    <section id="v3d" class="v3d off" aria-labelledby="v3dH">
+      <div id="v3dHost" class="v3d-host"></div>
+      <div class="v3d-top">
+        <div><b id="v3dH" data-i18n="v3d.title">3D view</b> <span class="note" data-i18n="v3d.sub"></span></div>
+        <div class="v3d-btns">
+          <button class="b sm" id="v3dFollow" aria-pressed="false" data-i18n="v3d.follow">Follow route (simulated)</button>
+          <button class="b sm" id="v3dRotL" data-i18n-aria="v3d.rotL" aria-label="Rotate left">⟲</button><button class="b sm" id="v3dRotR" data-i18n-aria="v3d.rotR" aria-label="Rotate right">⟳</button>
+          <button class="b sm" id="v3dIn" data-i18n-aria="zoom.in" aria-label="Zoom in">+</button><button class="b sm" id="v3dOut" data-i18n-aria="zoom.out" aria-label="Zoom out">&minus;</button>
+          <button class="b sm" id="v3dLow" aria-pressed="false" data-i18n="v3d.low">Low detail</button>
+          <button class="b sm pri" id="v3dExit" data-i18n="v3d.exit">Exit 3D</button>
+        </div>
+      </div>
+      <div id="v3dSim" class="v3d-sim off" role="status" aria-live="polite"><span class="simtag" data-i18n="nav.sim">SIMULATION</span> <span data-i18n="v3d.sim"></span><div id="v3dNav" class="v3d-nav"></div></div>
+      <div class="v3d-bottom">
+        <div class="leg"><span><i style="background:#c8d3df"></i><span data-i18n="v3d.legH"></span></span><span><i style="background:#e9d3ad"></i><span data-i18n="v3d.legL"></span></span><span><i style="background:#8d969f"></i><span data-i18n="v3d.legU"></span></span></div>
+        <div id="v3dStat" class="note" role="status"></div>
+        <div class="note" data-i18n="v3d.help"></div>
+      </div>
+    </section>
+    <div id="rload" class="off" role="status"><span class="spin" aria-hidden="true"></span> <span data-i18n="loading.map">Loading Mumbai map data…</span></div>
+  </section>
+
+  <!-- Floating side panel (bottom sheet on phones) -->
+  <aside id="panel" class="panel" aria-label="HeatShield Mumbai">
+    <button id="panelToggle" class="ptoggle" aria-expanded="true" aria-controls="pbody"><span class="grip" aria-hidden="true"></span><span class="arrow" aria-hidden="true">◀</span><span class="sr" id="panelToggleLabel" data-i18n="panel.hide">Hide panel</span></button>
+    <header class="phead">
+      <div class="brand"><h1>HeatShield <span>Mumbai</span></h1><p class="sub" data-i18n="app.sub">Walking routes, live weather and a heat forecast map</p></div>
+      <div class="topr"><span id="net" class="net on" role="status">Online</span><button class="b sm" id="setBtn" aria-expanded="false" aria-controls="settings"><span aria-hidden="true">⚙</span> <span data-i18n="settings">Settings</span></button></div>
+    </header>
+
+    <div class="pbody" id="pbody">
+      <section class="card off" id="settings" aria-labelledby="h-set">
+        <h2 id="h-set" data-i18n="settings">Settings</h2>
+        <label class="fl" for="langSel" data-i18n="settings.lang">Language</label>
+        <select id="langSel"></select>
+        <div class="setrow"><span class="fl" data-i18n="settings.temp">Temperature</span><div class="seg" role="group" id="segTemp"><button class="b sm" data-v="C">°C</button><button class="b sm" data-v="F">°F</button></div></div>
+        <div class="setrow"><span class="fl" data-i18n="settings.dist">Distance</span><div class="seg" role="group" id="segDist"><button class="b sm" data-v="km">km</button><button class="b sm" data-v="mi">mi</button></div></div>
+        <div class="setrow"><span class="fl" data-i18n="settings.theme">Theme</span><div class="seg" role="group" id="segTheme"><button class="b sm" data-v="light" data-i18n="theme.light">Light</button><button class="b sm" data-v="dark" data-i18n="theme.dark">Dark</button></div></div>
+        <p class="note" data-i18n="settings.note"></p>
+        <p class="note"><button class="link" data-consent-open data-i18n="foot.storage">Storage settings</button> · <a href="privacy" data-i18n="foot.privacy">Privacy</a></p>
+      </section>
+
+      <section class="card" aria-labelledby="h-dir">
+        <h2 id="h-dir" data-i18n="dir.title">Directions (walking)</h2>
+        <div class="note" id="rstat" role="status"></div>
+        <label class="fl" for="rF" data-i18n="from">From</label>
+        <div class="sugw"><input class="tin" id="rF" data-i18n-ph="ph.search" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="sugF"><div class="sug off" id="sugF" role="listbox"></div></div>
+        <div class="row"><button class="b" id="rMy" data-i18n="btn.myloc">Use my location</button><button class="b" id="rSw" data-i18n="btn.swap">Swap</button></div>
+        <label class="fl" for="rT" data-i18n="to">To</label>
+        <div class="sugw"><input class="tin" id="rT" data-i18n-ph="ph.search" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="sugT"><div class="sug off" id="sugT" role="listbox"></div></div>
+        <div class="row"><button class="b pri" id="rGo" data-i18n="btn.find">Find routes</button><button class="b" id="rClr" data-i18n="btn.clear">Clear</button></div>
+        <div class="row"><select id="rNearCat" data-i18n-aria="near.aria"></select><button class="b" id="rNear" style="flex:0 0 auto" data-i18n="btn.nearest">Route to nearest</button></div>
+        <div class="row"><select id="rJump" data-i18n-aria="jump.aria"></select><button class="b" id="rGoJ" style="flex:0 0 64px" data-i18n="btn.go">Go</button></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-route">
+        <h2 id="h-route" data-i18n="route.title">Route</h2>
+        <div class="chips" id="rchips"></div>
+        <div id="rrinfo"></div>
+        <div class="row"><button class="b" id="rNav" aria-pressed="false" data-i18n="btn.startnav">Start navigation</button><button class="b" id="rSim" data-i18n="btn.sim">Simulate walk</button></div>
+        <div class="row"><label for="rSimSpeed" class="inl" data-i18n="sim.speed">Simulation speed</label><input type="range" id="rSimSpeed" min="1.4" max="30" step="0.2" value="8"><b id="rSimSpeedV"></b></div>
+        <div class="row"><input type="checkbox" id="rVoice"><label for="rVoice" class="inl" data-i18n="voice">Voice guidance</label></div>
+        <div class="note off" id="voiceNote" data-i18n="voice.missing"></div>
+        <div class="nav-now off" id="rnow" role="status" aria-live="polite"></div>
+        <div id="rdir"></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-sel">
+        <h2 id="h-sel" data-i18n="sel.title">Selected place</h2>
+        <div id="rsel"></div>
+        <div class="row"><button class="b" id="rsetS" data-i18n="btn.setstart">Set as start</button><button class="b" id="rsetE" data-i18n="btn.setend">Set as end</button></div>
+      </section>
+
+      <section class="card" id="amcard" aria-labelledby="h-am">
+        <h2 id="h-am" data-i18n="am.title">Parking, EV charging &amp; toilets</h2>
+        <div class="note" id="amStatus" role="status"></div>
+        <div class="row"><button class="b" id="amNear" data-i18n="am.nearBtn">Nearest to destination / selected place</button></div>
+        <div id="amList"></div>
+        <p class="note" data-i18n="am.note"></p>
+      </section>
+
+      <section class="card" id="heatcard" aria-labelledby="h-heat">
+        <h2 id="h-heat" data-i18n="heat.title">Heat forecast map</h2>
+        <div class="row"><input type="checkbox" id="heatOn" checked><label for="heatOn" class="inl" data-i18n="heat.show">Show heat layer on the map</label></div>
+        <div class="heat-times row wrap" role="group" data-i18n-aria="heat.times"></div>
+        <div class="heat-status" role="status"></div>
+        <div class="heat-cell"></div>
+        <details>
+          <summary data-i18n="heat.what">What the colours mean</summary>
+          <div class="heat-legend leg" style="margin:6px 0"></div>
+          <p class="note" data-i18n-html="heat.whatText"></p>
+        </details>
+        <details>
+          <summary data-i18n="heat.official">Official heat warnings</summary>
+          <p class="note" data-i18n-html="heat.officialText"></p>
+        </details>
+      </section>
+
+      <section class="card" id="wxcard" aria-labelledby="h-wx">
+        <h2 id="h-wx" data-i18n="wx.title">Weather &amp; air quality</h2>
+        <div class="row"><div class="note wx-loc" style="flex:1">—</div><button class="b sm" id="wxCentre" style="flex:0 0 auto" data-i18n="wx.centre">Use map centre</button></div>
+        <div class="wx-state" role="status"></div>
+        <div class="wx-body"></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-demo">
+        <h2 id="h-demo" data-i18n="demo.title">3D demo neighbourhood</h2>
+        <p class="note" data-i18n="demo.text"></p>
+        <a class="b demo-link" href="demo" data-i18n="demo.open">Open the 3D demo</a>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="about.title">About this data</h2>
+        <p class="note" data-i18n="about.text"></p>
+      </section>
+
+      <footer class="foot">
+        <nav class="legal-links" aria-label="Legal"><a href="terms" data-i18n="foot.terms">Terms</a> · <a href="privacy" data-i18n="foot.privacy">Privacy</a> · <a href="cookies" data-i18n="foot.cookies">Cookies &amp; storage</a> · <button class="link" data-consent-open data-i18n="foot.storage">Storage settings</button> · <a href="demo" data-i18n="demo.title">3D demo neighbourhood</a></nav>
+        Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> (ODbL) · Weather and air quality: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0) · <span data-i18n="foot.emergency">Not for emergencies: call 112.</span>
+      </footer>
+    </div>
+  </aside>
+</main>
+<button id="cpBtn" class="cp-btn" aria-expanded="false" aria-controls="copilot"><span aria-hidden="true">💬</span> <span data-i18n="cp.title">Mumbai Copilot</span></button>
+<section id="copilot" class="copilot off" role="dialog" aria-labelledby="cpH">
+  <header class="cp-head"><div><h2 id="cpH" data-i18n="cp.title">Mumbai Copilot</h2><p class="note" data-i18n="cp.badge"></p></div><button id="cpClose" class="cs-x" data-i18n-aria="cs.close" aria-label="Close">×</button></header>
+  <div id="cpLog" class="cp-log" role="log" aria-live="polite"></div>
+  <form id="cpForm" class="cp-form" autocomplete="off"><input id="cpIn" class="tin" maxlength="300" data-i18n-ph="cp.ph" data-i18n-aria="cp.ph"><button class="b pri" data-i18n="cp.send">Send</button></form>
+</section>
+<div id="dev" class="dev off" aria-live="off"></div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
